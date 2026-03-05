@@ -1,9 +1,12 @@
+import 'package:animations/animations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:room_share/core/routes/app_transitions.dart';
 import 'package:room_share/features/home/domain/entities/room_entity.dart';
 import 'package:room_share/core/shared/theme.dart';
 import 'package:room_share/features/home/presentation/providers/home_providers.dart';
+import 'package:room_share/features/home/presentation/screens/home_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -33,13 +36,15 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
     final roomAsync = ref.watch(roomDetailProvider(widget.roomId));
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.white,
       body: roomAsync.when(
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
-        ),
+       
         error: (e, _) => Center(child: Text('Error: $e')),
-        data: (room) => _buildContent(room),
+        data: (room) => _buildContent(room), loading: () {
+          return const Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          );
+          },
       ),
     );
   }
@@ -51,6 +56,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
           slivers: [
             _buildImageGallery(room),
             SliverToBoxAdapter(
+              
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -98,7 +104,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                         fit: BoxFit.cover,
                         width: double.infinity,
                         placeholder: (_, __) => Container(
-                          color: AppColors.primaryLight,
+                          color: AppColors.background,
                         ),
                         errorWidget: (_, __, ___) => _imageFallback(),
                       )
@@ -172,7 +178,9 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
             children: [
               _circleIconBtn(
                 Icons.arrow_back_ios_new_rounded,
-                () => Navigator.pop(context),
+                () => Navigator.of(context).pop(
+              
+                ),
               ),
               _circleIconBtn(Icons.share_rounded, () {}),
             ],
@@ -210,38 +218,50 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
             children: [
-              Text(
-                '₹${room.pricePerMonth.toInt().toString().replaceAllMapped(
-                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                      (m) => '${m[1]},',
-                    )}',
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
-                ),
-              ),
-              const Text(
-                ' / month',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textGrey,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
+
+
+                 Text(
             room.title,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AppColors.textDark,
             ),
           ),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+              
+              
+                  
+                  Text(
+                    '₹${room.pricePerMonth.toInt().toString().replaceAllMapped(
+                          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                          (m) => '${m[1]},',
+                        )}',
+                    style: const TextStyle(
+                      fontSize:20 ,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                  const Text(
+                    ' /mo',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: AppColors.textGrey,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+       
           const SizedBox(height: 6),
           Row(
             children: [
@@ -350,19 +370,24 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
   // ── Amenities Grid ────────────────────────────────────────────────────────
   Widget _buildAmenitiesGrid(RoomEntity room) {
     final amenities = <Map<String, dynamic>>[];
-    if (room.hasWifi)
+    if (room.hasWifi) {
       amenities.add({'icon': Icons.wifi_rounded, 'label': 'WiFi'});
-    if (room.hasAc)
+    }
+    if (room.hasAc) {
       amenities.add({'icon': Icons.ac_unit_rounded, 'label': 'AC'});
-    if (room.hasFood)
+    }
+    if (room.hasFood) {
       amenities.add(
           {'icon': Icons.restaurant_rounded, 'label': 'Food Included'});
-    if (room.hasLaundry)
+    }
+    if (room.hasLaundry) {
       amenities.add(
           {'icon': Icons.local_laundry_service_rounded, 'label': 'Laundry'});
-    if (room.hasSecurity)
+    }
+    if (room.hasSecurity) {
       amenities
           .add({'icon': Icons.security_rounded, 'label': 'Security'});
+    }
 
     if (amenities.isEmpty) return const SizedBox();
 
@@ -382,35 +407,40 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
           ),
           const SizedBox(height: 16),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: amenities
                 .map(
-                  (a) => Column(
-                    children: [
-                      Container(
-                        width: 52,
-                        height: 52,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryLight,
-                          borderRadius: BorderRadius.circular(14),
+                  (a) => Padding(
+
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 52,
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryLight,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Icon(
+                            a['icon'] as IconData,
+                            color: AppColors.primary,
+                            size: 24,
+                          ),
                         ),
-                        child: Icon(
-                          a['icon'] as IconData,
-                          color: AppColors.primary,
-                          size: 24,
+                        const SizedBox(height: 6),
+                        Text(
+                          a['label'] as String,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textGrey,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        a['label'] as String,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: AppColors.textGrey,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+                    
+                      ],
+                    ),
                   ),
+                  
                 )
                 .toList(),
           ),
@@ -462,14 +492,14 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                     ),
                   ),
           ),
-          if (room.area != null) ...[
-            const SizedBox(height: 10),
-            Text(
-              '${room.area}, ${room.city}',
-              style: const TextStyle(
-                  color: AppColors.textGrey, fontSize: 13),
-            ),
-          ],
+          // if (room.area != null) ...[
+          //   const SizedBox(height: 10),
+          //   Text(
+          //     '${room.area}, ${room.city}',
+          //     style: const TextStyle(
+          //         color: AppColors.textGrey, fontSize: 13),
+          //   ),
+          // ],
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:room_share/core/routes/app_transitions.dart';
 import 'package:room_share/features/home/presentation/screens/room_detail_screen.dart';
 import 'package:room_share/core/shared/theme.dart';
 import 'package:shimmer/shimmer.dart';
@@ -83,12 +83,26 @@ class _RoomCardState extends ConsumerState<RoomCard> {
   }
 
   void _openDetail(BuildContext context, String roomId) {
+
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => RoomDetailScreen(roomId: roomId),
+    //   ),
+    // );
+
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => RoomDetailScreen(roomId: roomId),
+      AppTransitions.fadeThrough(
+        page: RoomDetailScreen(roomId: roomId),
       ),
+     
     );
+
+    
+    
+
+    
   }
 
   // ── Image section ─────────────────────────────────────────────────────────
@@ -110,30 +124,7 @@ class _RoomCardState extends ConsumerState<RoomCard> {
               : _buildImagePlaceholder(),
         ),
 
-        // Price badge
-        // Positioned(
-        //   top: 12,
-        //   left: 12,
-        //   child: Container(
-        //     padding:
-        //         const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-        //     decoration: BoxDecoration(
-        //       color: Colors.white.withOpacity(0.95),
-        //       borderRadius: BorderRadius.circular(20),
-        //       boxShadow: [
-        //         BoxShadow(
-        //             color: Colors.black.withOpacity(0.08), blurRadius: 8),
-        //       ],
-        //     ),
-        //     child: Text(
-        //       '₹ ${room.pricePerMonth.toInt()}/mo',
-        //       style: const TextStyle(
-        //           fontWeight: FontWeight.bold,
-        //           fontSize: 13,
-        //           color: AppColors.textDark),
-        //     ),
-        //   ),
-        // ),
+     
 
         // Favorite button
         Positioned(
