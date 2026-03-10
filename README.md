@@ -8,11 +8,9 @@ Built with **Flutter + Riverpod + Supabase** following **Clean Architecture** pr
 
 ## 📱 Screenshots
 
-> _Add screenshots here after taking them from your device_
-
 | Home Screen | Room Detail | Add Post | Profile |
 |---|---|---|---|
-| ![Home](screenshots/home.png) | ![Detail](screenshots/detail.png) | ![Add](screenshots/add.png) | ![Profile](screenshots/profile.png) |
+| ![Home](https://github.com/user-attachments/assets/1f5f7f80-662a-4579-aaa4-3ca882446989) | ![Detail](https://github.com/user-attachments/assets/a65bc750-b8ba-400d-bac0-010a9de794db) | ![Add](https://github.com/user-attachments/assets/1dd372a4-5e35-4509-afd6-63f5d28b1f83) | ![Profile](https://github.com/user-attachments/assets/ab609c98-5570-48e1-8f19-85fc97acb841) |
 
 ---
 
@@ -266,6 +264,6 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 
 ---
 
-## 👨‍💻 Author
+## 👨‍💻 Author: Kunal Karmavat 
 
 Built with ❤️ as a learning project for Clean Architecture with Flutter and Supabase.
